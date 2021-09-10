@@ -13,11 +13,16 @@ const Contact = () => {
             Blanditiis, obcaecati officiis. Consequatur, tempore doloremque?
             Culpa doloremque eius reiciendis cum nemo?
           </p>
-          <form className="contact-form">
+          <form
+            className="contact-form"
+            action="https://formspree.io/f/mzbyyljj"
+            method="POST"
+          >
             <input
               type="email"
               className="form-input"
               placeholder="enter email"
+              name="_replyto"
             />
             <button type="submit" className="submit-btn">
               subscribe
