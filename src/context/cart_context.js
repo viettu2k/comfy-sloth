@@ -11,14 +11,16 @@ import {
 const getLocalStorage = () => {
   let cart = localStorage.getItem("cart");
   if (cart) {
-    return JSON.parse(localStorage.getItem("cart"));
+    return JSON.parse(cart);
   } else {
     return [];
   }
 };
 
+console.log(getLocalStorage());
+
 const initialState = {
-  cart: [],
+  cart: getLocalStorage(),
   total_items: 0,
   total_amount: 0,
   shipping_fee: 534,
@@ -33,24 +35,23 @@ export const CartProvider = ({ children }) => {
   const addToCart = (id, color, amount, product) => {
     dispatch({ type: ADD_TO_CART, payload: { id, color, amount, product } });
   };
-
   // remove item
   const removeItem = (id) => {
     dispatch({ type: REMOVE_CART_ITEM, payload: id });
   };
-
   // toggle amount
   const toggleAmount = (id, value) => {
+    console.log(id, value);
     dispatch({ type: TOGGLE_CART_ITEM_AMOUNT, payload: { id, value } });
   };
-
   // clear cart
   const clearCart = () => {
     dispatch({ type: CLEAR_CART });
   };
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(state));
+    dispatch({ type: COUNT_CART_TOTALS });
+    localStorage.setItem("cart", JSON.stringify(state.cart));
   }, [state.cart]);
 
   return (
