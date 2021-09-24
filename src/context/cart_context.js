@@ -17,8 +17,6 @@ const getLocalStorage = () => {
   }
 };
 
-console.log(getLocalStorage());
-
 const initialState = {
   cart: getLocalStorage(),
   total_items: 0,
