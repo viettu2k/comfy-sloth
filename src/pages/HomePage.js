@@ -1,14 +1,14 @@
-import React from "react";
-import { FeaturedProducts, Hero, Services, Contact } from "../components";
-const HomePage = () => {
-  return (
-    <main>
-      <Hero />
-      <FeaturedProducts />
-      <Services />
-      <Contact />
-    </main>
-  );
-};
+import React from 'react';
 
-export default HomePage;
+import { FeaturedProducts, Hero, Services, Contact } from '../components';
+
+const HomePage = () => (
+  <main>
+    <Hero />
+    <FeaturedProducts />
+    <Services />
+    <Contact />
+  </main>
+);
+
+export default React.memo(HomePage);
