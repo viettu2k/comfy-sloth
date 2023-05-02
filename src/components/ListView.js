@@ -1,35 +1,30 @@
-import React from "react";
-import styled from "styled-components";
-import { formatPrice } from "../utils/helpers";
-import { Link } from "react-router-dom";
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-const ListView = ({ products }) => {
-  return (
-    <Wrapper>
-      {products.map((product) => {
-        const { id, image, name, price, description } = product;
-        return (
-          <article key={id}>
-            <img src={image} alt={name} />
-            <div>
-              <h4>{name}</h4>
-              <h5 className="price">{formatPrice(price)}</h5>
-              <p>{description.substring(0, 150)}...</p>
-              <Link to={`/products/${id}`} className="btn">
-                Details
-              </Link>
-            </div>
-          </article>
-        );
-      })}
-    </Wrapper>
-  );
-};
+import { formatPrice } from '../utils/helpers';
+
+const ListView = ({ products }) => (
+  <Wrapper>
+    {products.map(({ id, image, name, price, description }) => (
+      <article key={id}>
+        <img src={image} alt={name} />
+        <div>
+          <h4>{name}</h4>
+          <h5 className='price'>{formatPrice(price)}</h5>
+          <p>{description.substring(0, 150)}...</p>
+          <Link to={`/products/${id}`} className='btn'>
+            Details
+          </Link>
+        </div>
+      </article>
+    ))}
+  </Wrapper>
+);
 
 const Wrapper = styled.section`
   display: grid;
   row-gap: 3rem;
-
   img {
     width: 100%;
     display: block;
@@ -64,4 +59,4 @@ const Wrapper = styled.section`
   }
 `;
 
-export default ListView;
+export default React.memo(ListView);

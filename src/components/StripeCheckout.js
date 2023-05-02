@@ -1,55 +1,55 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import { loadStripe } from "@stripe/stripe-js";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { loadStripe } from '@stripe/stripe-js';
 import {
   CardElement,
   useStripe,
   Elements,
   useElements,
-} from "@stripe/react-stripe-js";
-import axios from "axios";
-import { useCartContext } from "../context/cart_context";
-import { useUserContext } from "../context/user_context";
-import { formatPrice } from "../utils/helpers";
-import { useHistory } from "react-router-dom";
+} from '@stripe/react-stripe-js';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+
+import { useCartContext } from '../context/cart_context';
+import { useUserContext } from '../context/user_context';
+import { formatPrice } from '../utils/helpers';
 
 const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+
+const cardStyle = {
+  style: {
+    base: {
+      color: '#32325d',
+      fontFamily: 'Arial, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#32325d',
+      },
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a',
+    },
+  },
+};
 
 const CheckoutForm = () => {
   const { cart, total_amount, shipping_fee, clearCart } = useCartContext();
   const { myUser } = useUserContext();
   const history = useHistory();
-  // STRIPE STUFF
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
-  const [processing, setProcessing] = useState("");
+  const [processing, setProcessing] = useState('');
   const [disabled, setDisabled] = useState(true);
-  const [clientSecret, setClientSecret] = useState("");
+  const [clientSecret, setClientSecret] = useState('');
   const stripe = useStripe();
   const elements = useElements();
-
-  const cardStyle = {
-    style: {
-      base: {
-        color: "#32325d",
-        fontFamily: "Arial, sans-serif",
-        fontSmoothing: "antialiased",
-        fontSize: "16px",
-        "::placeholder": {
-          color: "#32325d",
-        },
-      },
-      invalid: {
-        color: "#fa755a",
-        iconColor: "#fa755a",
-      },
-    },
-  };
 
   const createPaymentIntent = async () => {
     try {
       const { data } = await axios.post(
-        "/.netlify/functions/create-payment-intent",
+        '/.netlify/functions/create-payment-intent',
         JSON.stringify({ cart, shipping_fee, total_amount })
       );
 
@@ -66,8 +66,9 @@ const CheckoutForm = () => {
 
   const handleChange = async (event) => {
     setDisabled(event.empty);
-    setError(event.error ? event.error.message : "");
+    setError(event.error ? event.error.message : '');
   };
+
   const handleSubmit = async (ev) => {
     ev.preventDefault();
     setProcessing(true);
@@ -76,6 +77,7 @@ const CheckoutForm = () => {
         card: elements.getElement(CardElement),
       },
     });
+
     if (payload.error) {
       setError(`Payment failed ${payload.error.message}`);
       setProcessing(false);
@@ -85,7 +87,7 @@ const CheckoutForm = () => {
       setSucceeded(true);
       setTimeout(() => {
         clearCart();
-        history.push("/");
+        history.push('/');
       }, 10000);
     }
   };
@@ -105,29 +107,27 @@ const CheckoutForm = () => {
           <p>Test Card Number : 4242 4242 4242 4242</p>
         </article>
       )}
-      <form id="payment-form" onSubmit={handleSubmit}>
+      <form id='payment-form' onSubmit={handleSubmit}>
         <CardElement
-          id="card-element"
+          id='card-element'
           options={cardStyle}
           onChange={handleChange}
         />
-        <button disabled={processing || disabled || succeeded} id="submit">
-          <span id="button-text">
-            {processing ? <div className="spinner" id="spinner"></div> : "Pay"}
+        <button disabled={processing || disabled || succeeded} id='submit'>
+          <span id='button-text'>
+            {processing ? <div className='spinner' id='spinner'></div> : 'Pay'}
           </span>
         </button>
-        {/* Show any error that happens when processing the payment */}
         {error && (
-          <div className="card-error" role="alert">
+          <div className='card-error' role='alert'>
             {error}
           </div>
         )}
-        {/* Show  a success message upon completion */}
-        <p className={succeeded ? "result-message" : "result-message hidden"}>
-          Payment succeeded, see the result in your{" "}
+        <p className={succeeded ? 'result-message' : 'result-message hidden'}>
+          Payment succeeded, see the result in your{' '}
           <a href={`https://dashboard.stripe.com/test/payments`}>
             Stripe dashboard.
-          </a>{" "}
+          </a>{' '}
           Refresh the page to pay again
         </p>
       </form>
@@ -135,15 +135,14 @@ const CheckoutForm = () => {
   );
 };
 
-const StripeCheckout = () => {
-  return (
-    <Wrapper>
-      <Elements stripe={promise}>
-        <CheckoutForm />
-      </Elements>
-    </Wrapper>
-  );
-};
+const StripeCheckout = () => (
+  <Wrapper>
+    <Elements stripe={promise}>
+      <CheckoutForm />
+    </Elements>
+  </Wrapper>
+);
+
 const Wrapper = styled.section`
   form {
     width: 30vw;
@@ -196,7 +195,6 @@ const Wrapper = styled.section`
   #payment-request-button {
     margin-bottom: 32px;
   }
-  /* Buttons and links */
   button {
     background: #5469d4;
     font-family: Arial, sans-serif;
@@ -219,7 +217,6 @@ const Wrapper = styled.section`
     opacity: 0.5;
     cursor: default;
   }
-  /* spinner/processing state, errors */
   .spinner,
   .spinner:before,
   .spinner:after {
@@ -241,7 +238,7 @@ const Wrapper = styled.section`
   .spinner:before,
   .spinner:after {
     position: absolute;
-    content: "";
+    content: '';
   }
   .spinner:before {
     width: 10.4px;
@@ -284,4 +281,4 @@ const Wrapper = styled.section`
   }
 `;
 
-export default StripeCheckout;
+export default React.memo(StripeCheckout);

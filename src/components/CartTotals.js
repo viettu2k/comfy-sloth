@@ -1,9 +1,10 @@
-import React from "react";
-import styled from "styled-components";
-import { useCartContext } from "../context/cart_context";
-import { useUserContext } from "../context/user_context";
-import { formatPrice } from "../utils/helpers";
-import { Link } from "react-router-dom";
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+
+import { useCartContext } from '../context/cart_context';
+import { useUserContext } from '../context/user_context';
+import { formatPrice } from '../utils/helpers';
 
 const CartTotals = () => {
   const { total_amount, shipping_fee } = useCartContext();
@@ -25,11 +26,11 @@ const CartTotals = () => {
           </h4>
         </article>
         {myUser ? (
-          <Link to="/checkout" className="btn">
+          <Link to='/checkout' className='btn'>
             proceed to checkout
           </Link>
         ) : (
-          <button className="btn" type="button" onClick={loginWithRedirect}>
+          <button className='btn' type='button' onClick={loginWithRedirect}>
             login
           </button>
         )}
@@ -70,4 +71,4 @@ const Wrapper = styled.section`
   }
 `;
 
-export default CartTotals;
+export default React.memo(CartTotals);

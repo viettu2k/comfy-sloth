@@ -1,38 +1,37 @@
-import React from "react";
-import styled from "styled-components";
-import { services } from "../utils/constants";
+import React from 'react';
+import styled from 'styled-components';
 
-const Services = () => {
-  return (
-    <Wrapper>
-      <div className="section-center">
-        <article className="header">
-          <h3>
-            custom furniture <br /> built only for you
-          </h3>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos
-            illo, quod veniam voluptates enim cupiditate ipsum nemo, esse odio
-            dolorum dolore sequi mollitia labore ea velit quibusdam quisquam
-            quidem corporis.
-          </p>
-        </article>
-        <div className="services-center">
-          {services.map((service) => {
-            const { id, icon, title, text } = service;
-            return (
-              <article key={id} className="service">
-                <span className="icon">{icon}</span>
-                <h4>{title}</h4>
-                <p>{text}</p>
-              </article>
-            );
-          })}
-        </div>
+import { services } from '../utils/constants';
+
+const Services = () => (
+  <Wrapper>
+    <div className='section-center'>
+      <article className='header'>
+        <h3>
+          custom furniture <br /> built only for you
+        </h3>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos
+          illo, quod veniam voluptates enim cupiditate ipsum nemo, esse odio
+          dolorum dolore sequi mollitia labore ea velit quibusdam quisquam
+          quidem corporis.
+        </p>
+      </article>
+      <div className='services-center'>
+        {services.map((service) => {
+          const { id, icon, title, text } = service;
+          return (
+            <article key={id} className='service'>
+              <span className='icon'>{icon}</span>
+              <h4>{title}</h4>
+              <p>{text}</p>
+            </article>
+          );
+        })}
       </div>
-    </Wrapper>
-  );
-};
+    </div>
+  </Wrapper>
+);
 
 const Wrapper = styled.section`
   h3,
@@ -40,9 +39,7 @@ const Wrapper = styled.section`
     color: var(--clr-primary-1);
   }
   padding: 5rem 0;
-
   background: var(--clr-primary-10);
-
   .header h3 {
     margin-bottom: 2rem;
   }
@@ -97,4 +94,5 @@ const Wrapper = styled.section`
     }
   }
 `;
-export default Services;
+
+export default React.memo(Services);

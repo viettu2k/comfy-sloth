@@ -1,12 +1,13 @@
-import React from "react";
-import logo from "../assets/logo.svg";
-import { Link } from "react-router-dom";
-import { useProductsContext } from "../context/products_context";
-import { FaTimes } from "react-icons/fa";
-import { links } from "../utils/constants";
-import styled from "styled-components";
-import CartButtons from "./CartButtons";
-import { useUserContext } from "../context/user_context";
+import React from 'react';
+import logo from '../assets/logo.svg';
+import { Link } from 'react-router-dom';
+import { FaTimes } from 'react-icons/fa';
+import styled from 'styled-components';
+
+import { useProductsContext } from '../context/products_context';
+import { links } from '../utils/constants';
+import CartButtons from './CartButtons';
+import { useUserContext } from '../context/user_context';
 
 const Sidebar = () => {
   const { isSidebarOpen, closeSidebar } = useProductsContext();
@@ -15,15 +16,15 @@ const Sidebar = () => {
   return (
     <SidebarContainer>
       <aside
-        className={`${isSidebarOpen ? "sidebar show-sidebar" : "sidebar"}`}
+        className={`${isSidebarOpen ? 'sidebar show-sidebar' : 'sidebar'}`}
       >
-        <div className="sidebar-header">
-          <img src={logo} alt="comfy sloth" className="logo" />
-          <button className="close-btn" type="button" onClick={closeSidebar}>
+        <div className='sidebar-header'>
+          <img src={logo} alt='comfy sloth' className='logo' />
+          <button className='close-btn' type='button' onClick={closeSidebar}>
             <FaTimes />
           </button>
         </div>
-        <ul className="links">
+        <ul className='links'>
           {links.map(({ id, text, url }) => {
             return (
               <li key={id}>
@@ -35,7 +36,7 @@ const Sidebar = () => {
           })}
           {myUser && (
             <li>
-              <Link to="/checkout" onClick={closeSidebar}>
+              <Link to='/checkout' onClick={closeSidebar}>
                 checkout
               </Link>
             </li>
@@ -85,14 +86,12 @@ const SidebarContainer = styled.div`
     transition: var(--transition);
     letter-spacing: var(--spacing);
   }
-
   .links a:hover {
     padding: 1rem 1.5rem;
     padding-left: 2rem;
     background: var(--clr-grey-10);
     color: var(--clr-grey-2);
   }
-
   .sidebar {
     position: fixed;
     top: 0;
@@ -118,4 +117,4 @@ const SidebarContainer = styled.div`
   }
 `;
 
-export default Sidebar;
+export default React.memo(Sidebar);

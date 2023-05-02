@@ -1,25 +1,23 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Navbar, Sidebar, Footer } from './components';
 
-import {
-  Home,
-  SingleProduct,
-  Cart,
-  Checkout,
-  Error,
-  About,
-  Products,
-  PrivateRoute,
-  AuthWrapper,
-} from './pages';
+import { Navbar, Sidebar, Footer, Loading } from './components';
+import { PrivateRoute, AuthWrapper } from './pages';
 
-function App() {
-  return (
-    <AuthWrapper>
-      <Router>
-        <Navbar />
-        <Sidebar />
+const Home = lazy(() => import('./pages/HomePage'));
+const SingleProduct = lazy(() => import('./pages/SingleProductPage'));
+const Cart = lazy(() => import('./pages/CartPage'));
+const Checkout = lazy(() => import('./pages/CheckoutPage'));
+const Error = lazy(() => import('./pages/ErrorPage'));
+const About = lazy(() => import('./pages/AboutPage'));
+const Products = lazy(() => import('./pages/ProductsPage'));
+
+const App = () => (
+  <AuthWrapper>
+    <Router>
+      <Navbar />
+      <Sidebar />
+      <Suspense fallback={<Loading />}>
         <Switch>
           <Route exact path='/'>
             <Home />
@@ -41,10 +39,10 @@ function App() {
             <Error />
           </Route>
         </Switch>
-        <Footer />
-      </Router>
-    </AuthWrapper>
-  );
-}
+      </Suspense>
+      <Footer />
+    </Router>
+  </AuthWrapper>
+);
 
 export default App;
